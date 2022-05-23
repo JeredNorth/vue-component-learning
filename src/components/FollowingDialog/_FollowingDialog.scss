@@ -1,0 +1,27 @@
+#following-dialog {
+    .following-card {
+      width: 500px;
+      height: 700px;
+    }
+  
+    .following-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 5px;
+      border-radius: 0.5em;
+    }
+    .following-left {
+      display: flex;
+    }
+    .following-text {
+      margin-top: 15px
+    }
+  
+    .following-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  

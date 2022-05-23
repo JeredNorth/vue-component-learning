@@ -1,0 +1,34 @@
+#followers-dialog {
+    .following-card {
+      width: 500px;
+      height: 700px;
+    }
+  
+    .following-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 5px;
+      border-radius: 0.5em;
+    }
+    .following-left {
+      display: flex;
+      position: relative;
+    }
+    .following-text {
+      margin-top: 15px
+    }
+    .mini-follow-button {
+      position: absolute;
+      bottom: 0;
+      left: 22px;
+    }
+  
+    .following-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  
+  
