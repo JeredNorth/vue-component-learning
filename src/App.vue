@@ -76,20 +76,20 @@
     </q-drawer>
 
     <q-page-container>
-      <HelloWorld />
+      <Home />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import { ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import Home from './pages/Home.vue';
 
 export default {
   name: 'LayoutDefault',
 
   components: {
-    HelloWorld,
+    Home,
   },
 
   setup() {
