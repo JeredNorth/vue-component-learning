@@ -49,7 +49,7 @@
                                 </h3>
                                 <p class="text-accent">
                                     {{ review.date }} -
-                                    <q-rating :value="review.rating" readonly class="q-pb-xs" color="accent" size="1em"
+                                    <q-rating :model-value="review.rating" readonly class="q-pb-xs" color="accent" size="1em"
                                         icon="star_border" icon-selected="star" />
                                 </p>
                             </div>
@@ -71,25 +71,25 @@
         </q-scroll-area>
 
         <div v-else style="width:90%; margin:auto;">
-            <h1 class="text-center">No Reviews</h1>
+            <h1 class="text-center" style="color:white;">No Reviews</h1>
         </div>
 
         <q-separator class="q-my-md" style="width:90%; margin: 20px auto;" size="2px" color="accent" />
 
-        <!-- <user-review-form v-if="($lget($authUser, 'name') !== $lget(user, 'name'))" :value="{ user }" class="review-form">
-        </user-review-form> -->
+        <user-review-form class="review-form">
+        </user-review-form>
 
     </q-page>
 </template>
 
 <script>
-// import userReviewForm from 'components/profile/userReviewForm/userReviewForm';
+import UserReviewForm from '../components/UserReviewForm/UserReviewForm.vue';
 // import { date } from 'quasar';
 
 export default {
     name: 'Reviews',
     components: {
-
+        UserReviewForm,
     },
     data() {
         return {
@@ -105,21 +105,21 @@ export default {
                     name: 'Jered North',
                     message: 'Wilfred got me the items I wanted in excellent condition so quickly',
                     date: '2/22/2022',
-                    rating: 4,
+                    rating: 5,
                 },
                 {
                     avatar: '',
-                    name: 'Jered North',
-                    message: 'Wilfred got me the items I wanted in excellent condition so quickly',
+                    name: 'Trevor Mool',
+                    message: 'Products came quickly and in good condition',
                     date: '2/22/2022',
                     rating: 4,
                 },
                 {
                     avatar: '',
-                    name: 'Jered North',
-                    message: 'Wilfred got me the items I wanted in excellent condition so quickly',
+                    name: 'Ferris Borlin',
+                    message: 'Had no problems in my items and delivery',
                     date: '2/22/2022',
-                    rating: 4,
+                    rating: 3,
                 },
             ],
         };
@@ -152,6 +152,10 @@ export default {
     margin: 0 auto;
 }
 .review-container {
+    color: white;
+}
+
+.review-form {
     color: white;
 }
 
