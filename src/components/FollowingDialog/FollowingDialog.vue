@@ -58,7 +58,7 @@ export default {
         return {
             followingList: [
                 {
-                    avatar: 'https://static.bandainamcoent.eu/high/pac-man/brand-setup/pac_thumb_brand_624x468_4b.jpg',
+                    avatar: 'https://image.emojipng.com/471/9074471.jpg',
                     name: 'Jered North',
                     date: '2/22/2022',
                 },

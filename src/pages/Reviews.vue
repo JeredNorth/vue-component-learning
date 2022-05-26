@@ -1,12 +1,12 @@
 <template>
     <q-page id="reviews">
         <div style="width:90%; margin: 0 auto" class="flex justify-between">
-            <h1 v-if="($lget($authUser, '_id') === $lget(user, '_id'))" class="text-accent">
+            <h1 class="text-accent">
                 Your Reviews
             </h1>
-            <h1 v-else class="text-accent">
+            <!-- <h1 v-else class="text-accent">
                 {{ $lget(user, 'name') }}'s Reviews
-            </h1>
+            </h1> -->
 
             <div>
                 <slot name="back-btn">
@@ -35,22 +35,20 @@
                 <q-card v-for="(review, index) in reviews" :key="index" class="bg-primary" style="width:325px">
                     <q-card-section>
                         <div class="flex">
-                            <q-avatar v-if="$lget(review, '_fastjoin.sender.avatar')"
-                                @click="$router.push(`/private/${review._fastjoin.sender._id}`)"
-                                class="text-bold q-mr-sm" style="cursor:pointer;" size="60px" color="secondary">
-                                <img :src="$lget(review, '_fastjoin.sender.avatar.raw.file')" alt="avatar">
+                            <q-avatar v-if="review.avatar" class="text-bold q-mr-sm" style="cursor:pointer;" size="60px"
+                                color="secondary">
+                                <img :src="review.avatar" alt="avatar">
                             </q-avatar>
-                            <q-avatar v-else @click="$router.push(`/private/${review._fastjoin.sender._id}`)"
-                                class="text-bold q-mr-sm" style="cursor:pointer;" size="60px" color="secondary">
-                                {{ review._fastjoin.sender.name[0] }}
+                            <q-avatar v-else class="text-bold q-mr-sm" style="cursor:pointer;" size="60px" color="secondary">
+                                {{ review.name[0] }}
                             </q-avatar>
 
                             <div>
                                 <h3 class="text-bold" style="width:200px; margin:0 0 5px 0">
-                                    {{ review._fastjoin.sender.name }}
+                                    {{ review.name }}
                                 </h3>
                                 <p class="text-accent">
-                                    {{ reviewDate(review) }} -
+                                    {{ review.date }} -
                                     <q-rating :value="review.rating" readonly class="q-pb-xs" color="accent" size="1em"
                                         icon="star_border" icon-selected="star" />
                                 </p>
@@ -59,9 +57,10 @@
 
                         <div class="bg-dark q-pa-md" style="height:200px; border-radius:1em;">
                             <p>
-                                "{{ review.message }}"<span class="text-secondary" style="font-size: 13px">-{{
+                                "{{ review.message }}"
+                                <!-- <span class="text-secondary" style="font-size: 13px">-{{
                                         reviewEditedTag(review)
-                                }}</span>
+                                }}</span> -->
                             </p>
                         </div>
 
@@ -76,100 +75,72 @@
         </div>
 
         <q-separator class="q-my-md" style="width:90%; margin: 20px auto;" size="2px" color="accent" />
-        <user-review-form v-if="($lget($authUser, 'name') !== $lget(user, 'name'))" :value="{ user }" class="review-form">
-        </user-review-form>
+
+        <!-- <user-review-form v-if="($lget($authUser, 'name') !== $lget(user, 'name'))" :value="{ user }" class="review-form">
+        </user-review-form> -->
 
     </q-page>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import userReviewForm from 'components/profile/userReviewForm/userReviewForm';
-import reviewMixin from 'components/profile/reviewMixin';
-import { makeFindPaginateMixin } from '@iy4u/common-client-lib';
-import { date } from 'quasar';
+// import userReviewForm from 'components/profile/userReviewForm/userReviewForm';
+// import { date } from 'quasar';
 
 export default {
     name: 'Reviews',
     components: {
-        userReviewForm,
+
     },
-    mixins: [
-        reviewMixin,
-        makeFindPaginateMixin({
-            limit: 50,
-            service: 'reviews',
-            name: 'reviewsList',
-            qid: 'reviewsPage',
-            infinite: true,
-            query() {
-                return {
-                    _id: {
-                        $in: this.$lget(this.user, 'reviewsReceived'),
-                    },
-                    $sort: {
-                        createdAt: -1,
-                    },
-                };
-            },
-            params() {
-                return {
-                    reviewResolversQuery: {
-                        sender: [['_id', 'name', 'avatar']],
-                    },
-                };
-            },
-        }),
-    ],
     data() {
         return {
             user: undefined,
             searchTerm: '',
             ratingFilter: null,
             ratingFilterOptions: [
-                1, 2, 3, 4, 5
+                1, 2, 3, 4, 5,
+            ],
+            reviewsList: [
+                {
+                    avatar: '',
+                    name: 'Jered North',
+                    message: 'Wilfred got me the items I wanted in excellent condition so quickly',
+                    date: '2/22/2022',
+                    rating: 4,
+                },
+                {
+                    avatar: '',
+                    name: 'Jered North',
+                    message: 'Wilfred got me the items I wanted in excellent condition so quickly',
+                    date: '2/22/2022',
+                    rating: 4,
+                },
+                {
+                    avatar: '',
+                    name: 'Jered North',
+                    message: 'Wilfred got me the items I wanted in excellent condition so quickly',
+                    date: '2/22/2022',
+                    rating: 4,
+                },
             ],
         };
     },
-    async mounted() {
-        if (this.$route.params.id && this.stateUser._id !== this.$route.params.id) {
-            let user = this.getUser(this.$route.params.id);
-            if (!user) {
-                user = await this.loadGetUser(this.$route.params.id);
-            }
-            this.user = user.clone();
-        } else {
-            this.user = this.$authUser;
-        }
-    },
     computed: {
-        ...mapGetters('auth', {
-            stateUser: 'user',
-            isAuthenticated: 'isAuthenticated',
-        }),
-        ...mapGetters('users', {
-            getUser: 'get',
-        }),
         reviews() {
             if (this.ratingFilter !== null) {
                 return this.reviewsList.filter(
-                    review => review._fastjoin.sender.name.toLowerCase().includes(this.searchTerm.toLowerCase()) && review.rating === this.ratingFilter,
-                ).map(item => item.clone());
+                    (review) => review.name.toLowerCase().includes(this.searchTerm.toLowerCase()) && review.rating === this.ratingFilter,
+                ).map((item) => item);
             }
-            else {
-                return this.reviewsList.filter(
-                    review => review._fastjoin.sender.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
-                ).map(item => item.clone());
-            }
+
+            return this.reviewsList.filter(
+                (review) => review.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
+            ).map((item) => item);
         },
     },
     methods: {
-        ...mapActions('users', {
-            loadGetUser: 'get',
-        }),
-        reviewDate(review) {
-            return date.formatDate(review.createdAt, 'MM/DD/YYYY');
-        },
+        // reviewDate(review) {
+        //     return date.formatDate(review.createdAt, 'MM/DD/YYYY');
+        // },
     },
 };
 </script>
@@ -179,6 +150,9 @@ export default {
     display: flex;
     width: 550px;
     margin: 0 auto;
+}
+.review-container {
+    color: white;
 }
 
 @media screen and (max-width: 720px) {
