@@ -1,5 +1,5 @@
 <template>
-    <h1>Home Page</h1>
+    <h1 class="text-accent">Home Page</h1>
     <div class="home-button-wrapper" style="display:flex">
         <div style="margin-right: 1vw;">
             <q-card bordered class="bg-secondary text-uppercase">
